@@ -1,6 +1,29 @@
 <<<<<<< HEAD
 # ticket
-A ticket management system
+
+A web-based *Ticket Management System* built with *Laravel* and *Filament PHP*, designed to  project organization, and task assignments within a team .
+
+##  Features
+
+-  User roles and permissions (Admin, user, superadmin)
+-  Create, assign, and manage tickets
+-  Project-based ticket organization
+-  Kanban board view for ticket status management
+- 🔐 Secure authentication and authorization using Laravel spatie Permissions
+
+##  Tech 
+
+- **Backend:** Laravel 11
+- **Frontend:** Filament php + Tailwind CSS
+- **Database:** MySQL 
+- **Authentication:** Laravel spatie
+- **Other Tools:** Spatie Laravel Permission, Filament Shield
+
+## Dependencies to install
+- composer install
+- npm install && npm run dev
+- livewire
+
 =======
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
