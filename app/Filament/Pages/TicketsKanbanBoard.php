@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use App\Enums\TicketStatus;
 use Filament\Pages\Page;
 use Filament\Forms;
+use Filament\Forms\Form;
 
 class TicketsKanbanBoard extends Page implements Forms\Contracts\HasForms
 {
@@ -18,6 +19,9 @@ class TicketsKanbanBoard extends Page implements Forms\Contracts\HasForms
     public array $ticketsByStatus = [];
     public ?Ticket $editingTicket = null;
 
+
+    public ?array $data = [];
+
     public function mount(): void
     {
         $this->loadTickets();
@@ -25,14 +29,12 @@ class TicketsKanbanBoard extends Page implements Forms\Contracts\HasForms
 
     public function loadTickets(): void
     {
-        $this->ticketsByStatus = Ticket::orderBy('sort_order')->get()->groupBy('status')->toArray();
-         $this->ticketsByStatus = Ticket::with('assignees')
-        ->orderBy('sort_order')
-        ->get()
-        ->groupBy('status')
-        ->toArray();
 
-
+        $this->ticketsByStatus = Ticket::with('assignees')
+            ->orderBy('sort_order')
+            ->get()
+            ->groupBy('status')
+            ->toArray();
     }
 
     public function updateTicketStatus($ticketId, $newStatus): void
@@ -47,24 +49,35 @@ class TicketsKanbanBoard extends Page implements Forms\Contracts\HasForms
     public function openEditModal($id)
     {
         $this->editingTicket = Ticket::find($id);
+
+
         $this->form->fill($this->editingTicket->toArray());
+
         $this->dispatch('open-modal', id: 'edit-ticket-modal');
     }
 
     public function saveTicket(): void
     {
+
+        $state = $this->form->getState();
+
         if ($this->editingTicket) {
-            $this->editingTicket->update($this->form->getState());
+            $this->editingTicket->update($state);
         }
+
         $this->dispatch('close-modal', id: 'edit-ticket-modal');
         $this->loadTickets();
     }
 
-    protected function getFormSchema(): array
+
+    public function form(Form $form): Form
     {
-        return [
-            Forms\Components\TextInput::make('title')->required(),
-            Forms\Components\Textarea::make('description'),
-        ];
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('title')
+                    ->required(),
+                Forms\Components\Textarea::make('description'),
+            ])
+            ->statePath('data'); 
     }
 }
