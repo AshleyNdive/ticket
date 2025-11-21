@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Models\Ticket;
-use App\Enums\TicketStatus;
 use Filament\Pages\Page;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -19,9 +18,7 @@ class TicketsKanbanBoard extends Page implements Forms\Contracts\HasForms
     public array $ticketsByStatus = [];
     public ?Ticket $editingTicket = null;
 
-
     public ?array $data = [];
-
 
     public function mount(): void
     {
@@ -30,74 +27,45 @@ class TicketsKanbanBoard extends Page implements Forms\Contracts\HasForms
 
     public function loadTickets(): void
     {
-
-        $this->ticketsByStatus = Ticket::orderBy('sort_order')->get()->groupBy('status')->toArray();
-         $this->ticketsByStatus = Ticket::with('assignees')
-        ->orderBy('sort_order')
-        ->get()
-        ->groupBy('status')
-        ->toArray();
-
-
-
-
         $this->ticketsByStatus = Ticket::with('assignees')
             ->orderBy('sort_order')
             ->get()
             ->groupBy('status')
             ->toArray();
-
     }
 
     public function updateTicketStatus($ticketId, $newStatus): void
     {
-        $ticket = Ticket::find($ticketId);
-        if ($ticket && $ticket->status !== $newStatus) {
-            $ticket->update(['status' => $newStatus]);
+        if ($ticket = Ticket::find($ticketId)) {
+            if ($ticket->status !== $newStatus) {
+                $ticket->update(['status' => $newStatus]);
+            }
         }
+
         $this->loadTickets();
     }
 
     public function openEditModal($id)
     {
-        $this->editingTicket = Ticket::find($id);
+        $this->editingTicket = Ticket::findOrFail($id);
 
-        $this->form->fill($this->editingTicket->toArray());
-
-
-
-        $this->form->fill($this->editingTicket->toArray());
-
+        $this->form->fill(
+            $this->editingTicket->toArray()
+        );
 
         $this->dispatch('open-modal', id: 'edit-ticket-modal');
     }
 
     public function saveTicket(): void
     {
-
         if ($this->editingTicket) {
-            $this->editingTicket->update($this->form->getState());
+            $this->editingTicket->update(
+                $this->form->getState()
+            );
         }
-
-
-        $state = $this->form->getState();
-
-        if ($this->editingTicket) {
-            $this->editingTicket->update($state);
-        }
-
 
         $this->dispatch('close-modal', id: 'edit-ticket-modal');
         $this->loadTickets();
-    }
-
-
-    protected function getFormSchema(): array
-    {
-        return [
-            Forms\Components\TextInput::make('title')->required(),
-            Forms\Components\Textarea::make('description'),
-        ];
     }
 
     public function form(Form $form): Form
@@ -109,6 +77,5 @@ class TicketsKanbanBoard extends Page implements Forms\Contracts\HasForms
                 Forms\Components\Textarea::make('description'),
             ])
             ->statePath('data');
-
     }
 }
