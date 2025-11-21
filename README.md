@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+
+=======
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -59,3 +62,170 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+>>>>>>> cc0fee8 (Initial commit)
+
+# ticket
+
+A web-based *Ticket Management System* built with *Laravel* and *Filament PHP*, designed to  project organization, and task assignments within a team .
+
+##  Features
+
+-  User roles and permissions (Admin, user, superadmin)
+-  Create, assign, and manage tickets
+-  Project-based ticket organization
+-  Kanban board view for ticket status management
+- 🔐 Secure authentication and authorization using Laravel spatie Permissions
+
+##  Tech 
+
+- **Backend:** Laravel 11
+- **Frontend:** Filament php + Tailwind CSS
+- **Database:** MySQL 
+- **Authentication:** Laravel spatie
+- **Other Tools:** Spatie Laravel Permission, Filament Shield
+
+## Dependencies to install
+- composer install
+- npm install && npm run dev
+- livewire
+
+## Installation Guide (Beginner-Friendly)
+
+These instructions assume you have never set up a Laravel project before.
+
+* Requirements (Install These First)
+
+Before you begin, ensure your laptop has the following installed:
+
+1 PHP 8.2+
+
+Download from: https://www.php.net
+
+2 Composer (PHP package manager)
+
+Download: https://getcomposer.org/download/
+
+3 MySQL or MariaDB
+
+You can install XAMPP, MAMP, or WAMP but i used Xampp:
+https://www.apachefriends.org/index.html
+
+4 Node.js & NPM
+
+Download: https://nodejs.org/en/download
+
+---
+
+* Step-by-Step Setup
+
+1. Clone the Repository from GitHub
+
+Open your terminal (CMD, PowerShell, Git Bash, or Mac Terminal) and run:
+
+git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+
+Replace with your actual repo link.
+
+Then move into the project folder:
+
+cd your-project-folder
+---
+
+2. Install PHP Dependencies
+
+Run:
+composer install
+
+This installs Laravel, Filament, and backend libraries.
+---
+
+3. Install Frontend Dependencies
+
+npm install
+npm run dev
+
+This compiles the CSS and JavaScript.
+---
+4. Create Your Environment File
+
+Copy the example environment file:
+
+cp .env.example .env
+
+(or manually duplicate it in Windows)
+
+---
+
+5. Set Up Your Database: 
+
+1. Open phpMyAdmin (if using XAMPP: http://localhost/phpmyadmin)
+
+2. Click New
+
+3. Create a database (e.g., ticketdb)
+
+4. Update .env to match:
+
+DB_DATABASE=ticketdb
+DB_USERNAME=root
+DB_PASSWORD=
+
+(XAMPP default has no password — leave it empty unless you set one.)
+
+---
+5. Run Migrations + Seed Admin User
+
+This creates the database tables and seeds roles/admin accounts:
+php artisan migrate --seed
+This will create the default admin (modify seeds if needed).
+
+Install Spatie Laravel Permission (role & permission management)
+
+Spatie Permission is used to manage roles like Admin, User, Super Admin.
+
+composer require spatie/laravel-permission
+
+Publish the config and migration files:
+
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+
+Run migrations to create the tables:
+
+php artisan migrate
+
+
+. Install Livewire
+
+Livewire is required for interactive components (Filament uses it too).
+
+# install Livewire
+composer require livewire/livewire
+
+Install Filament (Admin Panel)
+
+Filament provides the admin UI, resources (CRUD), and integrates with Livewire and Tailwind.
+
+# install Filament
+composer require filament/filament
+
+Run Filament's installer (this publishes config, migrations, and assets):
+
+php artisan filament:install
+
+Create an admin user for Filament (the command will prompt you for name/email/password):
+
+php artisan make:filament-user
+# follow prompts to create the initial admin
+
+Open the Filament admin at /admin (or the URL printed by the installer) after php artisan serve.
+
+---
+
+6. Start the Development Server
+php artisan serve
+
+Laravel will run at:
+
+👉 http://localhost:8000
+http://localhost:8000/admin -> to go to the login page and login using the credentials you just created
+
